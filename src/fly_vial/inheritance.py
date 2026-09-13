@@ -1,5 +1,9 @@
 # Copyright (c) 2026 Martial Systems LLC
-"""Meiosis, mutation, and clutch expansion. Founder IDs follow allelic lineage."""
+"""Meiosis, mutation, and clutch expansion. Founder IDs follow allelic lineage.
+
+Free recombination: each locus segregates independently. No chromosomal blocks.
+QTLs do not hitchhike. That is the intended v1 map, not a missing chromosome model.
+"""
 
 from __future__ import annotations
 

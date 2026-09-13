@@ -15,7 +15,11 @@ from fly_vial.similarity import mating_traits, pairwise_fm_distance
 
 
 def mean_pairwise_phi(founder: np.ndarray) -> float:
-    """Mean kinship over unordered pairs from autosomal QTL founder IDs."""
+    """Mean pairwise kinship (Wright's phi) from autosomal QTL founder-allele IBD.
+
+    This is not F. F in the generation record is 1 - H_t / H_0 from within-individual
+    IBD heterozygosity. When H_0 = 1, H_t = 1 - F is an identity, not a second result.
+    """
     n, k, _ = founder.shape
     if n < 2 or k == 0:
         return 0.0

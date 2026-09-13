@@ -1,1 +1,1 @@
-Closed vial of 1,000 flies, paired by genome similarity. Recessive load. Connectome templates.
+k=3 assortative pairing at N=1,000: F=0.524 in 80 generations. Random mating F=0.034. Closed-form engine.

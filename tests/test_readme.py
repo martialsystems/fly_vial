@@ -24,8 +24,23 @@ def test_readme_question_first_and_templates() -> None:
     assert "vialforge/" in text
     assert "AGENTS.md" in text
     assert "https://gist.github.com/martialsystems/12835f747d6360781f3cc7f91f243178" in text
-    log = REPO / "logs" / "assort_80.json"
-    assert log.is_file()
-    data = json.loads(log.read_text(encoding="utf-8"))
-    last = data["generations"][-1]
-    assert f"F = {last['F']:.3f}" in text or f"F={last['F']:.3f}" in text
+    assort = json.loads((REPO / "logs" / "assort_80.json").read_text(encoding="utf-8"))
+    rand = json.loads((REPO / "logs" / "random_80.json").read_text(encoding="utf-8"))
+    a_last = assort["generations"][-1]
+    r_last = rand["generations"][-1]
+    assert f"F = {a_last['F']:.3f}" in text
+    assert f"F = {r_last['F']:.3f}" in text
+    assert "logs/random_80.json" in text
+    assert "t = 1" in text
+    assert "0.934" in text
+    assert "0.595" in text
+    assert "H = 1 - F" in text
+    assert "mean_pairwise_phi" in text
+    assert "not F" in text.lower() or "It is not F" in text
+    assert "free" in text.lower() and "recombination" in text.lower()
+    assert "brain-only" in text or "no VNC" in text
+    assert "closed-form overlays" in text
+    assert "n_eval_hook" in text
+    desc = (REPO / "description.txt").read_text(encoding="utf-8").strip()
+    assert "F=0.524" in desc
+    assert "F=0.034" in desc
