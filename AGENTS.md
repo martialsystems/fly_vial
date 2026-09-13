@@ -4,7 +4,7 @@ MIT for original code. FlyWire and MaleCNS remain under their published licenses
 
 Connectomes are templates. Each sex loads one published map (FlyWire 139,255 female brain; MaleCNS 166,691 male CNS). The vial does not instantiate a live 139k or 167k LIF.
 
-Default engine is the genome-to-circuit-scalar map. `--eval-connectome` is a cap-8 audit hook on accepted pairs. Locked 80-generation scores are closed-form. The hook was off.
+Default engine is the genome-to-circuit-scalar map. `--eval-connectome` is a cap-8 audit hook on accepted pairs. It uses a separate RNG so it does not step the vial. Seed-1 locked logs are hook-off. Seeds 2 and 3 may turn the hook on as an audit, not as a rewrite of `logs/assort_80.json` or `logs/random_80.json`.
 
 Closed vial: no immigration.
 
@@ -22,7 +22,7 @@ Mating is the forced similarity rule. Do not replace it with an emergent free-ch
 
 Recombination is free (independent loci). Do not add chromosomal blocks unless the operator asks.
 
-Locked logs: `logs/assort_80.json` (k = 3), `logs/random_80.json` (random). Do not restamp F = 0.524 or F = 0.034. Do not quote H as a second diversity finding: H = 1 - F when H_0 = 1. `mean_pairwise_phi` is pairwise kinship, not F; keep it in JSON, not as a headline. Courtship baseline is t = 1.
+Locked seed-1 logs: `logs/assort_80.json`, `logs/random_80.json`. Do not restamp F = 0.524 or F = 0.034. Seeds 2 and 3 write `logs/assort_80_s2.json` and friends. Never overwrite the seed-1 files. Public sentence is the description.txt block. Do not quote H as a second diversity finding: H = 1 - F when H_0 = 1. `mean_pairwise_phi` is pairwise kinship, not F; keep it in JSON, not as a headline. Courtship baseline is t = 1. Parallel courtship drop stays; a morphology-only assortative arm is a new experiment.
 
 Heterozygosity is IBD on founder-allele IDs, not QTL value inequality.
 

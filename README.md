@@ -2,7 +2,9 @@
 
 Does a closed vial of 1,000 diploid flies, paired by genome similarity, raise IBD F faster than random mating at the same N, seed, and load?
 
-Assortative k = 3, seed 1, 80 generations: F = 0.524. Random mating, same N / seed / load: F = 0.034. Wright's random-mating scale at census N = 1,000 is about 80 / 2,000 = 0.04. Census stayed at 1,000 on both arms. Locked logs: `logs/assort_80.json`, `logs/random_80.json`.
+k=3, seed 1, N=1,000, 80 generations: within-individual IBD F = 0.524 vs random F = 0.034. Census held. Courtship fell on both arms. Engine is closed-form. FlyWire/MaleCNS are templates, not the stepper.
+
+Wright's exact random-mating form is 1-(1-1/2000)^80 ≈ 0.039 at N = 1,000, t = 80. The linear headline 80 / 2,000 = 0.04 is that scale. Logged random F = 0.034 sits a little under it. Locked seed-1 logs: `logs/assort_80.json`, `logs/random_80.json`. Do not restamp 0.524 / 0.034.
 
 Independent fitness numbers, egg-to-adult viability, t = 0 to t = 80:
 
@@ -51,12 +53,18 @@ Random, `logs/random_80.json`:
 | 40 | 1,000 | 0.021 | 0.784 | 0.959 | 0.690 | 481 | 7 |
 | 80 | 1,000 | 0.034 | 0.791 | 0.959 | 0.599 | 485 | 2 |
 
+Seeds 2 and 3 write new files. They do not replace seed 1. Assortative F = 0.474 (seed 2) and 0.463 (seed 3), both ≫ Wright (~0.04). Random F = 0.035 and 0.035. Courtship still falls on both arms (seed 2: 0.933 to 0.624 assortative, 0.927 to 0.563 random; seed 3: 0.932 to 0.618, 0.927 to 0.582). Eval hook was on for those four runs only, as an audit. It does not step the vial. Seed 1 stays hook-off.
+
 ## How to run
 
 ```
 .venv/bin/python -m pytest
 .venv/bin/python -m fly_vial run --arm assortative --mode knn --k 3 --generations 80 --n 1000 --seed 1 --out logs/assort_80.json
 .venv/bin/python -m fly_vial run --arm random --mode random --generations 80 --n 1000 --seed 1 --out logs/random_80.json
+.venv/bin/python -m fly_vial run --arm assortative --mode knn --k 3 --generations 80 --n 1000 --seed 2 --eval-connectome --out logs/assort_80_s2.json
+.venv/bin/python -m fly_vial run --arm random --mode random --generations 80 --n 1000 --seed 2 --eval-connectome --out logs/random_80_s2.json
+.venv/bin/python -m fly_vial run --arm assortative --mode knn --k 3 --generations 80 --n 1000 --seed 3 --eval-connectome --out logs/assort_80_s3.json
+.venv/bin/python -m fly_vial run --arm random --mode random --generations 80 --n 1000 --seed 3 --eval-connectome --out logs/random_80_s3.json
 ```
 
 ## Files
@@ -65,8 +73,12 @@ Random, `logs/random_80.json`:
 |------|------|
 | `src/fly_vial/` | Genome, mating, inheritance, fitness, metrics, CLI |
 | `data/templates/` | FlyWire / MaleCNS counts and circuit type names |
-| `logs/assort_80.json` | Locked 80-generation k = 3 assortative run |
-| `logs/random_80.json` | Locked 80-generation random-mating contrast |
+| `logs/assort_80.json` | Locked seed-1 k = 3 assortative run |
+| `logs/random_80.json` | Locked seed-1 random-mating contrast |
+| `logs/assort_80_s2.json` | Seed 2 assortative, hook on |
+| `logs/random_80_s2.json` | Seed 2 random, hook on |
+| `logs/assort_80_s3.json` | Seed 3 assortative, hook on |
+| `logs/random_80_s3.json` | Seed 3 random, hook on |
 | `vialforge/` | GraphForge pin: five refuse laws |
 | `AGENTS.md` | Project rules and VBD |
 | `THIRD_PARTY.md` | Connectome attribution |

@@ -30,3 +30,14 @@ def test_eval_hook_respects_cap() -> None:
     result = run_generations(cfg)
     assert result["n_eval_hook_total"] <= 8
     assert len(result["eval_hook"]) <= 4
+
+
+def test_eval_hook_does_not_step_the_vial() -> None:
+    off = RunConfig(n=24, generations=4, seed=21, k=3, eval_connectome=False)
+    on = RunConfig(n=24, generations=4, seed=21, k=3, eval_connectome=True, eval_pairs=2)
+    a = run_generations(off)
+    b = run_generations(on)
+    assert b["n_eval_hook_total"] > 0
+    assert a["generations"][-1]["F"] == b["generations"][-1]["F"]
+    assert a["generations"][-1]["n"] == b["generations"][-1]["n"]
+    assert a["generations"][-1]["heterozygosity_qtl"] == b["generations"][-1]["heterozygosity_qtl"]

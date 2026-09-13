@@ -56,3 +56,38 @@ def test_locked_g80_assortative_and_random_contrast() -> None:
         ag[-1]["fitness_components"]["courtship"] - rg[-1]["fitness_components"]["courtship"]
     ) < 0.02
     assert "mean_pairwise_phi" in ag[-1]
+
+
+def test_seeds_2_and_3_pass_promotion_bar() -> None:
+    wright = 0.04
+    for seed in (2, 3):
+        assort = _load(f"assort_80_s{seed}.json")
+        rand = _load(f"random_80_s{seed}.json")
+        assert assort["config"]["seed"] == seed
+        assert rand["config"]["seed"] == seed
+        assert assort["config"]["eval_connectome"] is True
+        assert rand["config"]["eval_connectome"] is True
+        af = assort["generations"][-1]["F"]
+        rf = rand["generations"][-1]["F"]
+        assert af > 0.2
+        assert af > 5 * wright
+        assert 0.03 <= rf <= 0.05
+        ac = assort["generations"][1]["fitness_components"]["courtship"]
+        rc = rand["generations"][1]["fitness_components"]["courtship"]
+        ac80 = assort["generations"][-1]["fitness_components"]["courtship"]
+        rc80 = rand["generations"][-1]["fitness_components"]["courtship"]
+        assert ac80 < ac
+        assert rc80 < rc
+        assert assort["generations"][-1]["n"] == 1000
+        assert rand["generations"][-1]["n"] == 1000
+
+
+def test_seed1_lock_files_not_replaced() -> None:
+    a = _load("assort_80.json")
+    r = _load("random_80.json")
+    assert a["config"]["seed"] == 1
+    assert r["config"]["seed"] == 1
+    assert a["config"]["eval_connectome"] is False
+    assert r["config"]["eval_connectome"] is False
+    assert abs(a["generations"][-1]["F"] - 0.5238) < 1e-4
+    assert abs(r["generations"][-1]["F"] - 0.0341) < 1e-4

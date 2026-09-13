@@ -86,6 +86,8 @@ def run_generations(cfg: RunConfig, rng: np.random.Generator | None = None) -> d
     require_templates(female_n=FLYWIRE_N, male_n=MALECNS_N)
 
     rng = rng or np.random.default_rng(cfg.seed)
+    # Audit hook must not consume the vial stream. Seed 1 locked logs are hook-off.
+    eval_rng = np.random.default_rng(int(cfg.seed) + 1_000_003)
     pop = init_population(cfg, rng)
     ph = phenotype(pop, cfg)
     sigma0 = freeze_sigma0(mating_traits(ph), cfg)
@@ -158,7 +160,7 @@ def run_generations(cfg: RunConfig, rng: np.random.Generator | None = None) -> d
         n_eval = 0
         hook_rows: list[dict] = []
         if cfg.eval_connectome and pairing.n_accepted:
-            hook_rows = eval_accepted_pairs(pop, ph, pairing, cfg, rng)
+            hook_rows = eval_accepted_pairs(pop, ph, pairing, cfg, eval_rng)
             n_eval = 2 * len(hook_rows)
             last_hook = hook_rows
 

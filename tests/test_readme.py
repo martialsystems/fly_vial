@@ -28,8 +28,14 @@ def test_readme_question_first_and_templates() -> None:
     rand = json.loads((REPO / "logs" / "random_80.json").read_text(encoding="utf-8"))
     a_last = assort["generations"][-1]
     r_last = rand["generations"][-1]
-    assert f"F = {a_last['F']:.3f}" in text
-    assert f"F = {r_last['F']:.3f}" in text
+    frozen = (
+        "k=3, seed 1, N=1,000, 80 generations: within-individual IBD "
+        f"F = {a_last['F']:.3f} vs random F = {r_last['F']:.3f}. Census held. "
+        "Courtship fell on both arms. Engine is closed-form. "
+        "FlyWire/MaleCNS are templates, not the stepper."
+    )
+    assert frozen in text
+    assert frozen in (REPO / "description.txt").read_text(encoding="utf-8")
     assert "logs/random_80.json" in text
     assert "t = 1" in text
     assert "0.934" in text
@@ -42,5 +48,10 @@ def test_readme_question_first_and_templates() -> None:
     assert "closed-form overlays" in text
     assert "n_eval_hook" in text
     desc = (REPO / "description.txt").read_text(encoding="utf-8").strip()
-    assert "F=0.524" in desc
-    assert "F=0.034" in desc
+    assert "F = 0.524" in desc
+    assert "F = 0.034" in desc
+    assert "not the stepper" in desc
+    assert "templates" in desc
+    assert "logs/assort_80_s2.json" in text
+    assert "0.474" in text
+    assert "0.463" in text
