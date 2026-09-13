@@ -1,0 +1,12 @@
+{
+  "flywire_female": {
+    "n_neurons": 139255,
+    "citation": "Dorkenwald et al., Nature 634:124-138 (2024)",
+    "doi": "10.1038/s41586-024-07558-y"
+  },
+  "malecns_male": {
+    "n_neurons": 166691,
+    "citation": "Berg et al., Cell 2026",
+    "note": "brain plus ventral nerve cord; MANC is inside this volume"
+  }
+}

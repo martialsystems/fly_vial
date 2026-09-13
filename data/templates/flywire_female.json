@@ -1,0 +1,13 @@
+{
+  "name": "flywire_female",
+  "sex": "female",
+  "n_neurons": 139255,
+  "scope": "whole brain, no VNC",
+  "citation": "Dorkenwald et al., Nature 634:124-138 (2024)",
+  "circuits": {
+    "recept_pC1": ["pC1"],
+    "recept_vpoDN": ["vpoDN"],
+    "track_LC10": ["LC10"],
+    "loco_DN": ["DNg", "DNa"]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "malecns_male",
+  "sex": "male",
+  "n_neurons": 166691,
+  "scope": "brain plus ventral nerve cord",
+  "citation": "Berg et al., Cell 2026",
+  "circuits": {
+    "song_P1": ["P1", "pC1"],
+    "song_pIP10": ["pIP10"],
+    "song_CPG": ["vPR6", "TN1A"],
+    "track_LC10": ["LC10a"],
+    "aggr_P1": ["P1"],
+    "loco_DN": ["DNg", "DNa", "DNp01"]
+  }
+}

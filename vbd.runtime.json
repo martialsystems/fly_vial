@@ -1,0 +1,49 @@
+{
+  "runtime_checks": [
+    {
+      "id": "unit-tests",
+      "argv": [".venv/bin/python", "-m", "pytest", "tests/", "-q"],
+      "timeout_s": 180,
+      "paths": [
+        "src/**",
+        "tests/**",
+        "vialforge/**",
+        "data/**",
+        "logs/**",
+        "README.md",
+        "AGENTS.md",
+        "description.txt",
+        "requirements.txt",
+        "pyproject.toml",
+        "vbd.runtime.json"
+      ]
+    },
+    {
+      "id": "fixture-run",
+      "argv": [
+        ".venv/bin/python",
+        "-m",
+        "fly_vial",
+        "run",
+        "--arm",
+        "assortative",
+        "--generations",
+        "8",
+        "--n",
+        "40",
+        "--seed",
+        "1",
+        "--out",
+        "logs/fixture_g8.json"
+      ],
+      "timeout_s": 60,
+      "paths": ["src/**", "tests/**", "vialforge/**"]
+    },
+    {
+      "id": "vialforge-sanity",
+      "argv": [".venv/bin/python", "vialforge/scripts/sanity_vialforge.py"],
+      "timeout_s": 60,
+      "paths": ["vialforge/**", "tests/test_vialforge_laws.py"]
+    }
+  ]
+}
