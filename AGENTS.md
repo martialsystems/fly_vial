@@ -26,6 +26,8 @@ Locked seed-1 logs: `logs/assort_80.json`, `logs/random_80.json`. Do not restamp
 
 Heterozygosity is IBD on founder-allele IDs, not QTL value inequality.
 
+Child nested repo `gf_cheat/`: GF-versus-LPLC2 selection and outcross. Different question. Do not restamp this tree's locked F sentence from that child.
+
 Pin is `vialforge/`. Five laws: claim bans, engine order, closed vial, load required, template identity. Engine checkout `~/graphforge`. No catalog/`surfaces.json` unless the operator asks. Verify-before-done is the finish gate.
 
 ## Verify
