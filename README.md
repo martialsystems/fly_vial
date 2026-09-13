@@ -109,6 +109,6 @@ Logs: `logs/fail_capoff_knn_s{1,2,3}.json`, `logs/fail_capoff_rand_s{1,2,3}.json
 | `AGENTS.md` | Project rules and VBD |
 | `THIRD_PARTY.md` | Connectome attribution |
 
-Child tree `gf_cheat/`: select against giant-fiber escape, reward LPLC2-only, outcross, watch GF return. Different question. Do not restamp this file's locked F sentence.
+Child tree `gf_cheat/`: penalize giant-fiber escape, reward LPLC2-only, outcross. Selection drops P(use GF); a 50% outcross to jumpers undoes it. Different question. Do not restamp this file's locked F sentence.
 
 [Fly research index](https://gist.github.com/martialsystems/12835f747d6360781f3cc7f91f243178)
