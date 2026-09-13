@@ -20,9 +20,9 @@ Female template is brain-only. Do not silently add FANC. Female locomotion and c
 
 Mating is the forced similarity rule. Do not replace it with an emergent free-choice model unless the operator turns `receptivity_filter` on, and then only as a filter after legality.
 
-Recombination is free (independent loci). Do not add chromosomal blocks unless the operator asks.
+Recombination is free (independent loci). `--blocks` is refused until free-rec cap-off is logged. Do not add FANC, animation, or a free-choice mating model.
 
-Locked seed-1 logs: `logs/assort_80.json`, `logs/random_80.json`. Do not restamp F = 0.524 or F = 0.034. Seeds 2 and 3 write `logs/assort_80_s2.json` and friends. Never overwrite the seed-1 files. Public sentence is the description.txt block. Do not quote H as a second diversity finding: H = 1 - F when H_0 = 1. `mean_pairwise_phi` is pairwise kinship, not F; keep it in JSON, not as a headline. Courtship baseline is t = 1. Parallel courtship drop stays; a morphology-only assortative arm is a new experiment.
+Locked seed-1 logs: `logs/assort_80.json`, `logs/random_80.json`. Do not restamp F = 0.524 or F = 0.034. Seeds 2 and 3 write `logs/assort_80_s2.json` and friends. Failure contrast writes `logs/fail_capoff_*.json` and `logs/fail_capon_*.json`. Never overwrite the seed-1 files. Public sentence is the description.txt block. Do not quote H as a second diversity finding: H = 1 - F when H_0 = 1. `mean_pairwise_phi` is pairwise kinship, not F; keep it in JSON, not as a headline. Courtship baseline is t = 1. Parallel courtship drop stays; a morphology-only assortative arm is a new experiment. Do not retune k, load, or T_fail thresholds after a cap-off run. Do not claim the connectome stepped the vial.
 
 Heterozygosity is IBD on founder-allele IDs, not QTL value inequality.
 

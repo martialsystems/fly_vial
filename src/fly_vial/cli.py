@@ -32,6 +32,8 @@ def _parser() -> argparse.ArgumentParser:
     run.add_argument("--out", type=Path, default=LOGS / "run.json")
     run.add_argument("--eval-connectome", action="store_true")
     run.add_argument("--receptivity-filter", action="store_true")
+    run.add_argument("--cap", choices=["on", "off"], default="on")
+    run.add_argument("--blocks", action="store_true")
     return p
 
 
@@ -60,6 +62,10 @@ def main(argv: list[str] | None = None) -> int:
         eval_connectome=bool(args.eval_connectome),
         receptivity_filter=bool(args.receptivity_filter),
         arm=args.arm,
+        cap=args.cap,
+        blocks=bool(args.blocks),
+        n_ceiling=args.n,
+        fail_t_max=max(args.generations, 200) if args.cap == "off" else 200,
     )
     result = run_generations(cfg)
     write_run(result, args.out)
@@ -68,7 +74,8 @@ def main(argv: list[str] | None = None) -> int:
         f"t={last['t']} n={last['n']} F={last['F']:.4f} "
         f"phi={last['mean_pairwise_phi']:.4f} "
         f"viability={last['fitness_components']['viability']:.4f} "
-        f"extinct={last['extinct']}"
+        f"T_fail={result['T_fail']} rule={result['fail_rule']} "
+        f"cap={cfg.cap} extinct={last['extinct']}"
     )
     return 0
 

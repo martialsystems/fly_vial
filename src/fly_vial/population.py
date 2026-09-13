@@ -10,6 +10,7 @@ import numpy as np
 
 from fly_vial.config import RunConfig
 from fly_vial.eval_connectome import eval_accepted_pairs
+from fly_vial.failure import failure_rule, series_from_records, time_to_failure
 from fly_vial.fitness import phenotype
 from fly_vial.genome import FEMALE, MALE, Pop, init_population
 from fly_vial.inheritance import meiosis_mutate
@@ -66,11 +67,17 @@ def _subset(pop: Pop, idx: np.ndarray) -> Pop:
 
 
 def cap_uniform(eggs: Pop, n_cap: int, rng: np.random.Generator) -> Pop:
+    """Hard ceiling. Never pads. n < n_cap is a floating census."""
     if eggs.n <= n_cap:
         return eggs
     idx = rng.choice(eggs.n, size=n_cap, replace=False)
     idx.sort()
     return _subset(eggs, idx)
+
+
+def apply_census(live: Pop, cfg: RunConfig, rng: np.random.Generator) -> Pop:
+    """cap=on and cap=off share the ceiling. Neither injects template adults."""
+    return cap_uniform(live, int(cfg.n_ceiling), rng)
 
 
 def run_generations(cfg: RunConfig, rng: np.random.Generator | None = None) -> dict:
@@ -84,6 +91,11 @@ def run_generations(cfg: RunConfig, rng: np.random.Generator | None = None) -> d
     require_load(n_load=cfg.n_load, s_let=cfg.s_let, beta=cfg.beta, kappa=cfg.kappa)
     assert_template_counts()
     require_templates(female_n=FLYWIRE_N, male_n=MALECNS_N)
+
+    if cfg.blocks:
+        raise ValueError("chromosomal blocks are unbuilt; log free-rec cap-off first")
+    if cfg.cap not in ("on", "off"):
+        raise ValueError(f"cap must be on or off, got {cfg.cap!r}")
 
     rng = rng or np.random.default_rng(cfg.seed)
     # Audit hook must not consume the vial stream. Seed 1 locked logs are hook-off.
@@ -118,7 +130,10 @@ def run_generations(cfg: RunConfig, rng: np.random.Generator | None = None) -> d
     for _step in range(cfg.generations):
         n_f = int(np.sum(pop.sex == FEMALE))
         n_m = int(np.sum(pop.sex == MALE))
-        if pop.n == 0 or n_f == 0 or n_m == 0:
+        if pop.n == 0:
+            records[-1]["extinct"] = True
+            break
+        if n_f == 0 or n_m == 0:
             records[-1]["extinct"] = True
             break
         pairing = pair(pop, ph, cfg, rng, sigma0)
@@ -148,7 +163,7 @@ def run_generations(cfg: RunConfig, rng: np.random.Generator | None = None) -> d
         survive = rng.random(eggs.n) < egg_ph.viability
         n_viable = int(survive.sum())
         live = _subset(eggs, np.flatnonzero(survive))
-        nxt = cap_uniform(live, cfg.n, rng)
+        nxt = apply_census(live, cfg, rng)
 
         parent_f_ids = pop.ids[pairing.female_idx] if pairing.n_accepted else np.empty(0, dtype=np.uint64)
         parent_m_ids = pop.ids[pairing.male_idx] if pairing.n_accepted else np.empty(0, dtype=np.uint64)
@@ -182,18 +197,47 @@ def run_generations(cfg: RunConfig, rng: np.random.Generator | None = None) -> d
             n_eval_hook=n_eval,
         )
         records.append(rec)
-        if rec["extinct"]:
+        if rec["extinct"] or failure_rule(
+            rec, fail_n_min=cfg.fail_n_min, fail_viability=cfg.fail_viability
+        ):
             break
 
+    t_fail, fail_rule = time_to_failure(
+        records,
+        fail_t_max=cfg.fail_t_max,
+        fail_n_min=cfg.fail_n_min,
+        fail_viability=cfg.fail_viability,
+    )
+    last = records[-1] if records else None
+    if (
+        fail_rule is None
+        and last is not None
+        and last.get("extinct")
+        and int(last["n"]) > 0
+        and last["t"] > 0
+    ):
+        t_fail = int(last["t"])
+        fail_rule = "accepted_pairs==0"
+    series = series_from_records(records)
+    mate = "random" if cfg.mating_mode == "random" else "knn"
     return {
         "config": cfg.payload(),
+        "seed": cfg.seed,
+        "cap": cfg.cap,
+        "mate": mate,
+        "k": cfg.k,
+        "blocks": cfg.blocks,
         "h0_qtl": h0,
         "sigma0": sigma0.tolist(),
         "generations": records,
         "eval_hook": last_hook,
+        "n_eval_hook": int(sum(r["n_eval_hook"] for r in records)),
         "n_eval_hook_total": int(sum(r["n_eval_hook"] for r in records)),
         "final_t": records[-1]["t"] if records else 0,
         "extinct": bool(records[-1]["extinct"]) if records else True,
+        "T_fail": t_fail,
+        "fail_rule": fail_rule,
+        **series,
     }
 
 

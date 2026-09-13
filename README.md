@@ -55,6 +55,26 @@ Random, `logs/random_80.json`:
 
 Seeds 2 and 3 write new files. They do not replace seed 1. Assortative F = 0.474 (seed 2) and 0.463 (seed 3), both ≫ Wright (~0.04). Random F = 0.035 and 0.035. Courtship still falls on both arms (seed 2: 0.933 to 0.624 assortative, 0.927 to 0.563 random; seed 3: 0.932 to 0.618, 0.927 to 0.582). Eval hook was on for those four runs only, as an audit. It does not step the vial. Seed 1 stays hook-off.
 
+## Failure contrast (census allowed to move)
+
+Question: at the same seed, load, and k, does k=3 similarity pairing drive the vial to failure faster than random mating when census is allowed to move?
+
+Failure is pre-registered: first t with n = 0, or accepted pairs = 0 (t > 0), or n < 50 and egg viability < 0.20. T_fail is that t, or 200 if none fire. Courtship is reported and is not a failure rule. `--blocks` was not run.
+
+Cap-off, 200 generations, seeds 1 to 3. Census stayed at 1,000 on every vial (births never dropped below the 1,000 ceiling). T_fail = 200 on all six. Median knn T_fail = 200. Median random T_fail = 200.
+
+| seed | knn T_fail | random T_fail | knn courtship t=1→end | random courtship t=1→end |
+|-----:|-----------:|--------------:|----------------------:|-------------------------:|
+| 1 | 200 | 200 | 0.934 → 0.507 | 0.929 → 0.474 |
+| 2 | 200 | 200 | 0.933 → 0.454 | 0.927 → 0.412 |
+| 3 | 200 | 200 | 0.932 → 0.510 | 0.927 → 0.409 |
+
+Cap-on 80-generation direction check (new files, not a restamp): knn F ≫ Wright on seeds 1 to 3 (0.524, 0.474, 0.463). Random F stays ~0.03. Seed 1 knn F matches the locked 0.524. Do not quote those as a new title.
+
+Removing the cap did not make similarity pairing the faster route to failure.
+
+Logs: `logs/fail_capoff_knn_s{1,2,3}.json`, `logs/fail_capoff_rand_s{1,2,3}.json`, `logs/fail_capon_knn_s{1,2,3}.json`, `logs/fail_capon_rand_s{1,2,3}.json`.
+
 ## How to run
 
 ```
@@ -65,6 +85,8 @@ Seeds 2 and 3 write new files. They do not replace seed 1. Assortative F = 0.474
 .venv/bin/python -m fly_vial run --arm random --mode random --generations 80 --n 1000 --seed 2 --eval-connectome --out logs/random_80_s2.json
 .venv/bin/python -m fly_vial run --arm assortative --mode knn --k 3 --generations 80 --n 1000 --seed 3 --eval-connectome --out logs/assort_80_s3.json
 .venv/bin/python -m fly_vial run --arm random --mode random --generations 80 --n 1000 --seed 3 --eval-connectome --out logs/random_80_s3.json
+.venv/bin/python -m fly_vial run --arm assortative --mode knn --k 3 --n 1000 --seed 1 --generations 200 --cap off --eval-connectome --out logs/fail_capoff_knn_s1.json
+.venv/bin/python -m fly_vial run --arm random --mode random --n 1000 --seed 1 --generations 200 --cap off --eval-connectome --out logs/fail_capoff_rand_s1.json
 ```
 
 ## Files
@@ -79,6 +101,8 @@ Seeds 2 and 3 write new files. They do not replace seed 1. Assortative F = 0.474
 | `logs/random_80_s2.json` | Seed 2 random, hook on |
 | `logs/assort_80_s3.json` | Seed 3 assortative, hook on |
 | `logs/random_80_s3.json` | Seed 3 random, hook on |
+| `logs/fail_capoff_*.json` | Cap-off 200-generation failure contrast |
+| `logs/fail_capon_*.json` | Cap-on 80-generation F direction check |
 | `vialforge/` | GraphForge pin: five refuse laws |
 | `AGENTS.md` | Project rules and VBD |
 | `THIRD_PARTY.md` | Connectome attribution |

@@ -45,6 +45,12 @@ class RunConfig:
     eval_n_max: int = 8
     eval_pairs: int = 4
     arm: str = "assortative"
+    cap: str = "on"
+    blocks: bool = False
+    n_ceiling: int = 1000
+    fail_n_min: int = 50
+    fail_viability: float = 0.20
+    fail_t_max: int = 200
 
     def payload(self) -> dict:
         return asdict(self)

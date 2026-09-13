@@ -55,3 +55,9 @@ def test_readme_question_first_and_templates() -> None:
     assert "logs/assort_80_s2.json" in text
     assert "0.474" in text
     assert "0.463" in text
+    assert "Failure contrast (census allowed to move)" in text
+    assert "Removing the cap did not make similarity pairing the faster route to failure." in text
+    frozen_count = text.count(
+        "k=3, seed 1, N=1,000, 80 generations: within-individual IBD F = 0.524 vs random F = 0.034."
+    )
+    assert frozen_count >= 1
