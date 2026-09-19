@@ -1,0 +1,16 @@
+question: Does a closed vial of 1,000 diploid flies, paired by genome similarity, raise IBD F faster than random mating at the same N, seed, and load?
+falsifier: assortative F not greater than random F at the same N, seed, and load on the seed-1 lock
+object: unconstrained evolutionary toy
+status: Screen
+system: N=1000 diploid adults; 80 generations; k=3 nearest-neighbor pairing vs random; 16 autosomal QTL, 4 X QTL, 64 load loci
+data_version: FlyWire female template 139255 neurons (Dorkenwald et al., Nature 2024, doi 10.1038/s41586-024-07558-y); MaleCNS male template 166691 neurons (Berg et al., Cell 189:5504-5526, 2026-09-03, doi 10.1016/j.cell.2026.08.015). Templates are type-name lists. They do not step the vial.
+neuron_table: named types only (data/templates/)
+dynamics: closed-form genome-to-circuit-scalar map; no LIF
+rng: numpy.random.default_rng(seed); eval-connectome hook uses default_rng(seed + 1000003) and does not step the vial
+n_seeds: 3
+n_meaning: screen; seed 1 is the lock (hook off); seeds 2 and 3 write new files (hook on as audit)
+locked_metric: logs/assort_80.json t=80 F=0.5238125 (README 0.524) vs logs/random_80.json t=80 F=0.034; census held
+pre_specified: false
+science_lock: e2e22b7
+parent_sha: ""
+reduction: free recombination; forced k-NN on morphology plus courtship QTLs; hidden recessive load excluded from similarity; female locomotion and copulation-motor scores are closed-form overlays on the FlyWire brain map

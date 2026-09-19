@@ -73,6 +73,25 @@ Cap-on 80-generation direction check (new files, not a restamp): knn F ≫ Wrigh
 
 Removing the cap did not make similarity pairing the faster route to failure.
 
+## Methods card
+
+Copied from `METHODS.yaml`. Object of study: unconstrained evolutionary toy. FlyWire and MaleCNS are templates, not the stepper. n = 3 is a screen. Seed 1 is the lock.
+
+| Field | Value |
+|-------|-------|
+| Falsifier | assortative F not greater than random F at the same N, seed, and load on the seed-1 lock |
+| Status | Screen |
+| System | N=1,000; 80 generations; k=3 vs random |
+| Dynamics | closed-form QTL scalars; no LIF |
+| RNG | `numpy.random.default_rng(seed)`; eval hook `seed + 1_000_003` |
+| n / seeds | 3 (seed 1 lock, hook off; seeds 2 and 3 audit files) |
+| Locked metric | `logs/assort_80.json` t=80 F=0.524 vs `logs/random_80.json` F=0.034 |
+| Pre-specified | false (question locked after the split) |
+| Science lock | `e2e22b7` |
+| Reduction | free recombination; forced k-NN; load excluded from similarity |
+
+Wright's exact random-mating form is the scale for the random arm, not a new result.
+
 Two locked results, zero collapse results: capped k=3 raises F with census held and courtship falling on both arms; ceiling still binding, nobody dies by t=200. The load did not eat a 1,000-adult surplus. Whether similarity pairing is the faster route to failure is untested.
 
 Logs: `logs/fail_capoff_knn_s{1,2,3}.json`, `logs/fail_capoff_rand_s{1,2,3}.json`, `logs/fail_capon_knn_s{1,2,3}.json`, `logs/fail_capon_rand_s{1,2,3}.json`.
@@ -89,6 +108,7 @@ Logs: `logs/fail_capoff_knn_s{1,2,3}.json`, `logs/fail_capoff_rand_s{1,2,3}.json
 .venv/bin/python -m fly_vial run --arm random --mode random --generations 80 --n 1000 --seed 3 --eval-connectome --out logs/random_80_s3.json
 .venv/bin/python -m fly_vial run --arm assortative --mode knn --k 3 --n 1000 --seed 1 --generations 200 --cap off --eval-connectome --out logs/fail_capoff_knn_s1.json
 .venv/bin/python -m fly_vial run --arm random --mode random --n 1000 --seed 1 --generations 200 --cap off --eval-connectome --out logs/fail_capoff_rand_s1.json
+.venv/bin/python scripts/reproduce_lock.py
 ```
 
 ## Files
@@ -106,6 +126,11 @@ Logs: `logs/fail_capoff_knn_s{1,2,3}.json`, `logs/fail_capoff_rand_s{1,2,3}.json
 | `logs/fail_capoff_*.json` | Cap-off 200-generation failure contrast |
 | `logs/fail_capon_*.json` | Cap-on 80-generation F direction check |
 | `vialforge/` | GraphForge pin: five refuse laws |
+| `METHODS.yaml` | Methods card |
+| `CITATION.cff` | Citation file; DOI empty until a deposit exists |
+| `REPRODUCE.md` | Independent replica: hashes, pin, commands |
+| `scripts/reproduce_lock.py` | Hash-check locked logs; `--rerun` writes temp |
+| `requirements.lock.txt` | numpy 2.5.3, pytest 9.1.1 |
 | `AGENTS.md` | Project rules and VBD |
 | `THIRD_PARTY.md` | Connectome attribution |
 

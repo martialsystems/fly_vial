@@ -14,6 +14,11 @@
         "AGENTS.md",
         "description.txt",
         "requirements.txt",
+        "requirements.lock.txt",
+        "METHODS.yaml",
+        "CITATION.cff",
+        "REPRODUCE.md",
+        "scripts/**",
         "pyproject.toml",
         "vbd.runtime.json"
       ]
@@ -44,6 +49,12 @@
       "argv": [".venv/bin/python", "vialforge/scripts/sanity_vialforge.py"],
       "timeout_s": 60,
       "paths": ["vialforge/**", "tests/test_vialforge_laws.py"]
+    },
+    {
+      "id": "lock-hashes",
+      "argv": [".venv/bin/python", "scripts/reproduce_lock.py"],
+      "timeout_s": 30,
+      "paths": ["logs/**", "scripts/reproduce_lock.py", "REPRODUCE.md"]
     }
   ]
 }

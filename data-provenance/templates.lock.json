@@ -6,7 +6,8 @@
   },
   "malecns_male": {
     "n_neurons": 166691,
-    "citation": "Berg et al., Cell 2026",
-    "note": "brain plus ventral nerve cord; MANC is inside this volume"
+    "citation": "Berg et al., Cell 189:5504-5526 (2026-09-03)",
+    "doi": "10.1016/j.cell.2026.08.015",
+    "note": "brain plus ventral nerve cord; MANC is inside this volume; tree lock is 166691"
   }
 }

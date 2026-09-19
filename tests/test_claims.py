@@ -29,6 +29,9 @@ def test_readme_and_cli_help_are_clean() -> None:
     require_clean((REPO / "AGENTS.md").read_text(encoding="utf-8"), source="AGENTS.md")
     require_clean((REPO / "description.txt").read_text(encoding="utf-8"), source="description.txt")
     require_clean((REPO / "THIRD_PARTY.md").read_text(encoding="utf-8"), source="THIRD_PARTY.md")
+    require_clean((REPO / "METHODS.yaml").read_text(encoding="utf-8"), source="METHODS.yaml")
+    require_clean((REPO / "REPRODUCE.md").read_text(encoding="utf-8"), source="REPRODUCE.md")
+    require_clean((REPO / "CITATION.cff").read_text(encoding="utf-8"), source="CITATION.cff")
 
 
 def test_banned_tokens_fail() -> None:
