@@ -35,6 +35,9 @@ def test_methods_card_matches_readme_question() -> None:
     assert "cff-version: 1.2.0" in cite
     assert "Martial Systems LLC" in cite
     assert "10.5281" not in cite
+    assert "Grok" not in cite
+    assert "type: swh" in cite
+    assert "swh:1:snp:1ca342b7bacb5c9f996cf97a39933df3eb6c056e" in cite
     assert "—" not in cite
     assert (REPO / "requirements.lock.txt").is_file()
     lock = (REPO / "requirements.lock.txt").read_text(encoding="utf-8")

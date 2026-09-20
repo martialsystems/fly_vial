@@ -1,15 +1,19 @@
 cff-version: 1.2.0
-title: fly_vial
-message: If you use this locked split, cite the science-lock commit.
+title: fly_vial assortative IBD F lock (science-e2e22b7)
+message: If you use this locked split, cite the GitHub Release and the Software Heritage snapshot. There is no DOI yet.
 type: software
 authors:
   - name: Martial Systems LLC
 license: MIT
 repository-code: https://github.com/martialsystems/fly_vial
-url: https://gist.github.com/martialsystems/12835f747d6360781f3cc7f91f243178
+url: https://github.com/martialsystems/fly_vial/releases/tag/science-e2e22b7
 abstract: >
   Closed vial of 1,000 diploid flies. k=3 assortative pairing raises
   within-individual IBD F faster than random mating at the same N, seed,
   and load. FlyWire and MaleCNS are templates, not the stepper.
-version: "0.1.0"
+version: "science-e2e22b7"
 date-released: "2026-09-19"
+identifiers:
+  - type: swh
+    value: "swh:1:snp:1ca342b7bacb5c9f996cf97a39933df3eb6c056e"
+    description: Software Heritage snapshot including tag science-e2e22b7
